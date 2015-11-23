@@ -1,0 +1,74 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "Overview\n\n\nInstallation\n\n\nUsing BugSee on mobile devices requires installation of BugSee lightweight SDK:\n\n\n\n\nInstalling Android SDK\n\n\nInstalling IOS SDK\n\n\n\n\nBugSee on the WEB does not require any code modifications, no developers need to involved, the user just needs to install a browser extention and start filing bugs even for production website 30 seconds later:\n\n\n\n\nInstalling extention for Chrome\n\n\nInstalling extention for Firefox\n\n\nInstalling extention for Safari\n\n\n\n\nFeatures\n\n\nBugSee has a very rich feature set, yet on some platforms we managed to achieve more than on others, below is a table with the current state of affairs.\n\n\n\n\n\n\n\n\nFeature\n\n\nIOS\n\n\nAndroid\n\n\nWeb\n\n\n\n\n\n\n\n\n\n\nVideo\n\n\nYes\n\n\nYes*\n\n\nYes\n\n\n\n\n\n\nLog Touch events\n\n\nYes\n\n\nYes\n\n\nYes\n\n\n\n\n\n\nNetwork events\n\n\nYes\n\n\nNo\n\n\nYes\n\n\n\n\n\n\nView/activity name\n\n\nYes\n\n\nYes\n\n\nYes*\n\n\n\n\n\n\nUser events\n\n\nYes*\n\n\nYes*\n\n\nYes*\n\n\n\n\n\n\nUser traces\n\n\nYes*\n\n\nYes*\n\n\nYes*\n\n\n\n\n\n\n\n\n\n\nVideo recording\n\n\n\n\nTouch events\n\n\n\n\nNetwork\n\n\n\n\nDetect view/activity\n\n\n\n\nUser events\n\n\n\n\nUser traces\n\n\nFAQ\n\n\nWhy can't I do that?\n\n\nBecause", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#overview", 
+            "text": "", 
+            "title": "Overview"
+        }, 
+        {
+            "location": "/#installation", 
+            "text": "Using BugSee on mobile devices requires installation of BugSee lightweight SDK:   Installing Android SDK  Installing IOS SDK   BugSee on the WEB does not require any code modifications, no developers need to involved, the user just needs to install a browser extention and start filing bugs even for production website 30 seconds later:   Installing extention for Chrome  Installing extention for Firefox  Installing extention for Safari", 
+            "title": "Installation"
+        }, 
+        {
+            "location": "/#features", 
+            "text": "BugSee has a very rich feature set, yet on some platforms we managed to achieve more than on others, below is a table with the current state of affairs.     Feature  IOS  Android  Web      Video  Yes  Yes*  Yes    Log Touch events  Yes  Yes  Yes    Network events  Yes  No  Yes    View/activity name  Yes  Yes  Yes*    User events  Yes*  Yes*  Yes*    User traces  Yes*  Yes*  Yes*      Video recording   Touch events   Network   Detect view/activity   User events   User traces", 
+            "title": "Features"
+        }, 
+        {
+            "location": "/#faq", 
+            "text": "Why can't I do that?  Because", 
+            "title": "FAQ"
+        }, 
+        {
+            "location": "/sdk/ios/", 
+            "text": "IOS SDK\n\n\nInstallation\n\n\nThe recommended way to install BugSee is using \nCocoaPods\n, if you insist on installing it manually follow the \ninstructions\n\n\nAdd the following line to your project's Podifile\n\n\npod 'BugSee'\n\n\n\n\nrun \npod install\n command to update your pods\n\n\nImport BugSee header file in your app delegate or the file you intend to initialize the framework from\n\n\n#import \nBugSee/BugSee.h\n\n\n\n\n\nLocate your app delegate and initialize the framework in your application:didFinishLaunchingWithOptions method:\n\n\nObjective-C\n\n\n- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {\n    // ...other initialization code\n\n    [BugSee launchWithToken:@\nyour_app_token\n];\n\n    return YES;\n}\n\n\n\n\nSwift\n\n\n    ???\n\n\n\n\nConfiguration\n\n\nTBD\n\n\nUser traces\n\n\nUser traces can be attached to the report, this may be useful when you want to trace offline how a specific variable changes over time right before the problem happens.\n\n\nObjective-C\n\n\n    [BugSee trace:@\nmy_variable\n withVaue: 15];\n\n\n\n\nSwift\n\n\n    ???\n\n\n\n\nUser events\n\n\nUser events can be attached to the report, events are identified by a string and can have an optional dictionary of parameters that will be stored and passed along with the report.\n\n\nObjective-C\n\n\n    // Without any additional parameters\n    [BugSee registerEvent:@\npayment_processed\n];\n\n    // ...our with additional custom parameters\n    [BugSee registerEvent:@\npayment_processed\n withParams:@{\n        @\namount\n: 125,\n        @\ncurrency\n: 'USD'\n        }];\n\n\n\n\nSwift\n\n\n???", 
+            "title": "IOS"
+        }, 
+        {
+            "location": "/sdk/ios/#ios-sdk", 
+            "text": "", 
+            "title": "IOS SDK"
+        }, 
+        {
+            "location": "/sdk/ios/#installation", 
+            "text": "The recommended way to install BugSee is using  CocoaPods , if you insist on installing it manually follow the  instructions  Add the following line to your project's Podifile  pod 'BugSee'  run  pod install  command to update your pods  Import BugSee header file in your app delegate or the file you intend to initialize the framework from  #import  BugSee/BugSee.h   Locate your app delegate and initialize the framework in your application:didFinishLaunchingWithOptions method:  Objective-C  - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {\n    // ...other initialization code\n\n    [BugSee launchWithToken:@ your_app_token ];\n\n    return YES;\n}  Swift      ???", 
+            "title": "Installation"
+        }, 
+        {
+            "location": "/sdk/ios/#configuration", 
+            "text": "TBD", 
+            "title": "Configuration"
+        }, 
+        {
+            "location": "/sdk/ios/#user-traces", 
+            "text": "User traces can be attached to the report, this may be useful when you want to trace offline how a specific variable changes over time right before the problem happens.  Objective-C      [BugSee trace:@ my_variable  withVaue: 15];  Swift      ???", 
+            "title": "User traces"
+        }, 
+        {
+            "location": "/sdk/ios/#user-events", 
+            "text": "User events can be attached to the report, events are identified by a string and can have an optional dictionary of parameters that will be stored and passed along with the report.  Objective-C      // Without any additional parameters\n    [BugSee registerEvent:@ payment_processed ];\n\n    // ...our with additional custom parameters\n    [BugSee registerEvent:@ payment_processed  withParams:@{\n        @ amount : 125,\n        @ currency : 'USD'\n        }];  Swift  ???", 
+            "title": "User events"
+        }, 
+        {
+            "location": "/sdk/android/", 
+            "text": "", 
+            "title": "ANDROID"
+        }, 
+        {
+            "location": "/sdk/web/", 
+            "text": "", 
+            "title": "WEB"
+        }, 
+        {
+            "location": "/usage/", 
+            "text": "", 
+            "title": "Usage"
+        }
+    ]
+}
