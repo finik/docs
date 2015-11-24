@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>IOS - BugSee</title>
+	<title>REST Handbook - BugSee</title>
 
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -56,20 +56,20 @@
             
             
             
-                <li class="dropdown active">
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">SDK Integration <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
-                        <li class="active">
-                            <a href="./">IOS</a>
+                        <li >
+                            <a href="../../sdk/ios/">IOS</a>
                         </li>
                     
                         <li >
-                            <a href="../android/">ANDROID</a>
+                            <a href="../../sdk/android/">ANDROID</a>
                         </li>
                     
                         <li >
-                            <a href="../web/">WEB</a>
+                            <a href="../../sdk/web/">WEB</a>
                         </li>
                     
                     </ul>
@@ -77,16 +77,16 @@
             
             
             
-                <li class="dropdown">
+                <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
-                        <li >
-                            <a href="../../reference/rest-handbook/">REST Handbook</a>
+                        <li class="active">
+                            <a href="./">REST Handbook</a>
                         </li>
                     
                         <li >
-                            <a href="../../reference/rest/">REST Reference</a>
+                            <a href="../rest/">REST Reference</a>
                         </li>
                     
                     </ul>
@@ -104,12 +104,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../..">
+                    <a rel="next" href="../../sdk/web/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../android/">
+                    <a rel="prev" href="../rest/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -123,75 +123,111 @@
             <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#ios-sdk">IOS SDK</a></li>
+        <li class="main active"><a href="#rest-api">REST API</a></li>
         
-            <li><a href="#installation">Installation</a></li>
+            <li><a href="#creating-new-issue">Creating new issue</a></li>
         
-            <li><a href="#configuration">Configuration</a></li>
+            <li><a href="#adding-recording-to-an-issue">Adding recording to an issue</a></li>
         
-            <li><a href="#user-traces">User traces</a></li>
-        
-            <li><a href="#user-events">User events</a></li>
+            <li><a href="#searching-issues">Searching issues</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-9" role="main">
 
-<h1 id="ios-sdk">IOS SDK</h1>
-<h2 id="installation">Installation</h2>
-<p>The recommended way to install BugSee is using <a href="https://www.cocoapods.com">CocoaPods</a>, if you insist on installing it manually follow the <a href="sdk/ios-manual.md">instructions</a></p>
-<p>Add the following line to your project's Podifile</p>
-<pre><code class="bash">pod 'BugSee'
+<h1 id="rest-api">REST API</h1>
+<p>New SDK's can be easily implemented using the following REST API. This is a short tutorial on
+how to implement most common operations using the REST API, see <a href="../rest">full reference</a> for more details.</p>
+<h2 id="creating-new-issue">Creating new issue</h2>
+<p>Creating new issue happens in three stages, first a new item is being created in the system,
+the server provides an endpoint where the actual bundle can be uploaded, once the clients successfully
+uploads the bundle, it must update the recording session status to notify the system upload has
+been completed.</p>
+<h3 id="step-1">Step 1</h3>
+<pre><code>POST https://api.bugsee.com/issues
 </code></pre>
 
-<p>run <code>pod install</code> command to update your pods</p>
-<p>Import BugSee header file in your app delegate or the file you intend to initialize the framework from</p>
-<pre><code class="objective-c">#import &lt;BugSee/BugSee.h&gt;
-</code></pre>
-
-<p>Locate your app delegate and initialize the framework in your application:didFinishLaunchingWithOptions method:</p>
-<p><strong>Objective-C</strong></p>
-<pre><code class="objective-c">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // ...other initialization code
-
-    [BugSee launchWithToken:@&quot;your_app_token&quot;];
-
-    return YES;
+<pre><code class="json">{
+    app_token: '1234567',
+    access_token: '654321',
+    environment: {
+        ...
+    },
+    severity: 5,
+    title: 'Login view is broken after rotating the phone back and forth',
+    description: 'Just entered the login screen and rotated the phone, see the video'
 }
 </code></pre>
 
-<p><strong>Swift</strong></p>
-<pre><code class="swift">    ???
+<p>The response in case of success is going to include issue_id, session_id and an endpoint for uploading the bundle.</p>
+<pre><code class="json">{
+    issue_id: '1234',
+    session_id: '4321',
+    endpoint: 'https://upload-bucket.s3.amazonaws.com/2345678/'
+}
 </code></pre>
 
-<h2 id="configuration">Configuration</h2>
-<p>TBD</p>
-<h2 id="user-traces">User traces</h2>
-<p>User traces can be attached to the report, this may be useful when you want to trace offline how a specific variable changes over time right before the problem happens.</p>
-<p><strong>Objective-C</strong></p>
-<pre><code class="objective-c">    [BugSee trace:@&quot;my_variable&quot; withVaue: 15];
+<h3 id="step-2">Step 2</h3>
+<p>Upload the bundle to the provided endpoint</p>
+<pre><code>POST https://upload-bucket.s3.amazonaws.com/2345678/
 </code></pre>
 
-<p><strong>Swift</strong></p>
-<pre><code class="swift">    ???
+<h3 id="step-3">Step 3</h3>
+<p>Notify the system the recording session bundle has been uploaded</p>
+<pre><code>PUT https://api.bugsee.com/issues/1234/sessions/4321
 </code></pre>
 
-<h2 id="user-events">User events</h2>
-<p>User events can be attached to the report, events are identified by a string and can have an optional dictionary of parameters that will be stored and passed along with the report.</p>
-<p><strong>Objective-C</strong></p>
-<pre><code class="objective-c">    // Without any additional parameters
-    [BugSee registerEvent:@&quot;payment_processed&quot;];
-
-    // ...our with additional custom parameters
-    [BugSee registerEvent:@&quot;payment_processed&quot; withParams:@{
-        @&quot;amount&quot;: 125,
-        @&quot;currency&quot;: 'USD'
-        }];
+<pre><code class="json">{
+    app_token: '1234567',
+    access_token: '654321',
+    upload_complete: true
+}
 </code></pre>
 
-<p><strong>Swift</strong></p>
-<pre><code class="swift">???
+<h2 id="adding-recording-to-an-issue">Adding recording to an issue</h2>
+<p>The sequence is similar to creating a new issue with slight variations, but it consists of 3 steps as well</p>
+<h3 id="step-1_1">Step 1</h3>
+<pre><code>POST https://api.bugsee.com/issues/1234/sessions
+</code></pre>
+
+<pre><code class="json">{
+    app_token: '1234567',
+    access_token: '654321',
+    environment: {
+        ...
+    }
+}
+</code></pre>
+
+<p>The response in case of success is going to include issue_id, session_id and an endpoint for uploading the bundle.</p>
+<pre><code class="json">{
+    issue_id: '1234',
+    session_id: '4321',
+    endpoint: 'https://upload-bucket.s3.amazonaws.com/2345678/'
+}
+</code></pre>
+
+<h3 id="step-2_1">Step 2</h3>
+<p>Upload the bundle to the provided endpoint</p>
+<pre><code>POST https://upload-bucket.s3.amazonaws.com/2345678/
+</code></pre>
+
+<h3 id="step-3_1">Step 3</h3>
+<p>Notify the system the recording session bundle has been uploaded</p>
+<pre><code>PUT https://api.bugsee.com/issues/1234/sessions/4321
+</code></pre>
+
+<pre><code class="json">{
+    app_token: '1234567',
+    access_token: '654321',
+    upload_complete: true
+}
+</code></pre>
+
+<h2 id="searching-issues">Searching issues</h2>
+<p>In order to locate an existing issue, a search can be performed on the issues within the application</p>
+<pre><code>GET https://api.bugsee.com/issues?app_token=1234567&amp;access_token=654321&amp;term=login+screen
 </code></pre></div>
         </div>
 
