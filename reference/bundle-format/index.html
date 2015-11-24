@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>REST Reference - BugSee</title>
+	<title>Bundle Format - BugSee</title>
 
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
@@ -85,12 +85,12 @@
                             <a href="../rest-handbook/">REST Handbook</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">REST Reference</a>
+                        <li >
+                            <a href="../rest/">REST Reference</a>
                         </li>
                     
-                        <li >
-                            <a href="../bundle-format/">Bundle Format</a>
+                        <li class="active">
+                            <a href="./">Bundle Format</a>
                         </li>
                     
                     </ul>
@@ -108,12 +108,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../rest-handbook/">
+                    <a rel="next" href="../rest/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../bundle-format/">
+                    <a rel="prev" href="../../usage/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -127,30 +127,26 @@
             <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#rest-api-reference">REST API Reference</a></li>
+        <li class="main active"><a href="#bundle-format">Bundle format</a></li>
         
-            <li><a href="#authentication">Authentication</a></li>
+            <li><a href="#manifest-file">Manifest file</a></li>
         
-            <li><a href="#issues">Issues</a></li>
+            <li><a href="#touch-file">Touch file</a></li>
         
-            <li><a href="#sessions">Sessions</a></li>
+            <li><a href="#traces-file">Traces file</a></li>
         
-            <li><a href="#common">Common</a></li>
+            <li><a href="#events-file">Events file</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-9" role="main">
 
-<h1 id="rest-api-reference">REST API Reference</h1>
-<h2 id="authentication">Authentication</h2>
-<p>TBD</p>
-<h2 id="issues">Issues</h2>
-<h3 id="create-issue">Create issue</h3>
-<pre><code class="http">POST /issues
-</code></pre>
-
-<p><strong> Request </strong></p>
+<h1 id="bundle-format">Bundle format</h1>
+<p>Bundle is a zip archive which must contain at least one file <strong> manifest.json </strong></p>
+<h2 id="manifest-file">Manifest file</h2>
+<p>The file must be named <strong> manifest.json </strong> (lower case)</p>
+<h3 id="manifest">MANIFEST</h3>
 <table>
 <thead>
 <tr>
@@ -162,44 +158,20 @@
 </thead>
 <tbody>
 <tr>
-<td>app_token</td>
-<td>String</td>
-<td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>access_token</td>
-<td>String</td>
-<td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>environment</td>
-<td><a href="#common-environment">ENVIRONMENT</a></td>
-<td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>severity</td>
+<td>version</td>
 <td>Number</td>
 <td>Mandatory</td>
-<td>1..5</td>
+<td>1</td>
 </tr>
 <tr>
-<td>title</td>
-<td>String</td>
+<td>files</td>
+<td>[<a href="#STREAM">STREAM</a>]</td>
 <td>Mandatory</td>
-<td>Title of the issue</td>
-</tr>
-<tr>
-<td>description</td>
-<td>String</td>
-<td>Mandatory</td>
-<td>Description of the issue</td>
+<td>Array of STREAM structures</td>
 </tr>
 </tbody>
 </table>
-<p><strong> Response </strong></p>
+<h3 id="stream">STREAM</h3>
 <table>
 <thead>
 <tr>
@@ -211,29 +183,32 @@
 </thead>
 <tbody>
 <tr>
-<td>issue_id</td>
+<td>name</td>
 <td>String</td>
 <td>Mandatory</td>
-<td>Unique ID of the issue in the system</td>
+<td>Name of the stream</td>
 </tr>
 <tr>
-<td>session_id</td>
+<td>type</td>
 <td>String</td>
 <td>Mandatory</td>
-<td>Unique ID of the recording session in the system</td>
+<td>Type of the stream ('video', 'touch', 'events', 'traces', 'log', 'network')</td>
 </tr>
 <tr>
-<td>endpoint</td>
+<td>filename</td>
 <td>String</td>
 <td>Mandatory</td>
-<td>Endpoint that can be used to upload the report bundle</td>
+<td>Name of the file withing the bundle</td>
+</tr>
+<tr>
+<td>video_attrs</td>
+<td><a href="#VIDEO_ATTRS">VIDEO_ATTRS</a></td>
+<td>Optional</td>
+<td>If the stream is 'video'</td>
 </tr>
 </tbody>
 </table>
-<h3 id="listsearch-issues">List/Search issues</h3>
-<pre><code class="http">GET /issues?app_token=654321&amp;access_token=123456...
-</code></pre>
-
+<h3 id="video_attrs">VIDEO_ATTRS</h3>
 <table>
 <thead>
 <tr>
@@ -245,26 +220,32 @@
 </thead>
 <tbody>
 <tr>
-<td>app_token</td>
+<td>format</td>
 <td>String</td>
+<td>Mandatory</td>
+<td>mp4</td>
+</tr>
+<tr>
+<td>width</td>
+<td>Number</td>
 <td>Mandatory</td>
 <td></td>
 </tr>
 <tr>
-<td>access_token</td>
-<td>String</td>
+<td>height</td>
+<td>Number</td>
 <td>Mandatory</td>
 <td></td>
 </tr>
 <tr>
-<td>term</td>
-<td>String</td>
+<td>frame_rate</td>
+<td>Number</td>
 <td>Mandatory</td>
-<td>Search term</td>
+<td></td>
 </tr>
 </tbody>
 </table>
-<p><strong> Response </strong></p>
+<h2 id="touch-file">Touch file</h2>
 <table>
 <thead>
 <tr>
@@ -276,20 +257,20 @@
 </thead>
 <tbody>
 <tr>
-<td>meta</td>
-<td><a href="#PAGINATION">META</a></td>
+<td>version</td>
+<td>Number</td>
 <td>Mandatory</td>
-<td></td>
+<td>1</td>
 </tr>
 <tr>
-<td>items</td>
-<td>[ISSUE]</td>
+<td>events</td>
+<td>[<a href="#TOUCH_EVENT">TOUCH_EVENT</a>]</td>
 <td>Mandatory</td>
-<td>Array of found issues</td>
+<td>Array of touch events, sorted by time</td>
 </tr>
 </tbody>
 </table>
-<p><strong> ISSUE </strong></p>
+<h3 id="touch_event">TOUCH_EVENT</h3>
 <table>
 <thead>
 <tr>
@@ -300,38 +281,42 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>timestamp</td>
+<td>Date</td>
+<td>Mandatory</td>
+<td>Time of the event</td>
+</tr>
 <tr>
 <td>id</td>
 <td>String</td>
 <td>Mandatory</td>
-<td></td>
+<td>Unique ID of the touch to identify touch across its states</td>
 </tr>
 <tr>
-<td>title</td>
+<td>type</td>
 <td>String</td>
 <td>Mandatory</td>
-<td></td>
+<td>'begin', 'end', 'move'</td>
 </tr>
 <tr>
-<td>description</td>
-<td>String</td>
-<td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>severity</td>
+<td>x</td>
 <td>Number</td>
-<td>Mandatory</td>
-<td>1..5</td>
+<td>Optional</td>
+<td></td>
+</tr>
+<tr>
+<td>y</td>
+<td>Number</td>
+<td>Optional</td>
+<td></td>
 </tr>
 </tbody>
 </table>
-<h2 id="sessions">Sessions</h2>
-<h3 id="create-session">Create session</h3>
-<pre><code class="http">POST /issues/1234/sessions
-</code></pre>
-
-<p><strong> Request </strong></p>
+<h2 id="traces-file">Traces file</h2>
+<p>Trace can be used to continuously monitor a value of a variable. Variable names
+may include dots for namespace sake, system.* namespace is reserved and can not
+be used a by a user (e.x system.orienation, system.view, system.free_memory)</p>
 <table>
 <thead>
 <tr>
@@ -343,26 +328,20 @@
 </thead>
 <tbody>
 <tr>
-<td>app_token</td>
-<td>String</td>
+<td>version</td>
+<td>Number</td>
 <td>Mandatory</td>
-<td></td>
+<td>1</td>
 </tr>
 <tr>
-<td>access_token</td>
-<td>String</td>
+<td>traces</td>
+<td>[<a href="#TRACE">TRACE</a>]</td>
 <td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>environment</td>
-<td><a href="#common-environment">ENVIRONMENT</a></td>
-<td>Mandatory</td>
-<td></td>
+<td>Array of variables, sorted by time</td>
 </tr>
 </tbody>
 </table>
-<p><strong> Response </strong></p>
+<h3 id="trace">TRACE</h3>
 <table>
 <thead>
 <tr>
@@ -374,30 +353,32 @@
 </thead>
 <tbody>
 <tr>
-<td>issue_id</td>
+<td>name</td>
 <td>String</td>
 <td>Mandatory</td>
-<td>Unique ID of the issue in the system</td>
+<td>Variable name</td>
 </tr>
 <tr>
-<td>session_id</td>
+<td>type</td>
 <td>String</td>
 <td>Mandatory</td>
-<td>Unique ID of the recording session in the system</td>
+<td>Type of the variable ('string', 'number', 'bool')</td>
 </tr>
 <tr>
-<td>endpoint</td>
-<td>String</td>
+<td>value</td>
+<td>String/Number/Bool</td>
 <td>Mandatory</td>
-<td>Endpoint that can be used to upload the report bundle</td>
+<td>Initial value for the variable</td>
+</tr>
+<tr>
+<td>events</td>
+<td>[ <a href="#TRACE_EVENT">TRACE_EVENT</a> ]</td>
+<td>Mandatory</td>
+<td>Array of events for that variable, sorted by timestamp</td>
 </tr>
 </tbody>
 </table>
-<h3 id="update-session">Update session</h3>
-<pre><code class="http">PUT /issues/1234/sessions/4321
-</code></pre>
-
-<p><strong> Request </strong></p>
+<h3 id="trace_event">TRACE_EVENT</h3>
 <table>
 <thead>
 <tr>
@@ -409,28 +390,20 @@
 </thead>
 <tbody>
 <tr>
-<td>app_token</td>
-<td>String</td>
+<td>timestamp</td>
+<td>Date</td>
 <td>Mandatory</td>
-<td></td>
+<td>Time of the event</td>
 </tr>
 <tr>
-<td>access_token</td>
-<td>String</td>
+<td>value</td>
+<td>String/Number/Bool</td>
 <td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>upload_completed</td>
-<td>Boolean</td>
-<td>Mandatory</td>
-<td></td>
+<td>New value of the variable</td>
 </tr>
 </tbody>
 </table>
-<h2 id="common">Common</h2>
-<p><a name="common-environment"></a></p>
-<h3 id="environment">ENVIRONMENT</h3>
+<h2 id="events-file">Events file</h2>
 <table>
 <thead>
 <tr>
@@ -442,56 +415,22 @@
 </thead>
 <tbody>
 <tr>
-<td>platform.type</td>
-<td>String</td>
+<td>version</td>
+<td>Number</td>
 <td>Mandatory</td>
-<td>'ios', 'android', 'web', 'tvos', ...</td>
+<td>1</td>
 </tr>
 <tr>
-<td>platform.version</td>
-<td>String</td>
+<td>events</td>
+<td>[<a href="#EVENT">EVENT</a>]</td>
 <td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>hardware.manufacturer</td>
-<td>String</td>
-<td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>hardware.model</td>
-<td>String</td>
-<td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>sdk.version</td>
-<td>String</td>
-<td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>app.version</td>
-<td>String</td>
-<td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>app.build</td>
-<td>String</td>
-<td>Mandatory</td>
-<td></td>
-</tr>
-<tr>
-<td>app.package_id</td>
-<td>String</td>
-<td>Mandatory</td>
-<td>e.x com.dishero.cool-app</td>
+<td>Array of events, sorted by timestamp</td>
 </tr>
 </tbody>
 </table>
-<h3 id="meta">META</h3>
+<h3 id="event">EVENT</h3>
+<p>Event names may include dots for namespace sake, system.* namespace is reserved and can not
+be used a by a user (e.x system.memory_low, system.battery_low, etc)</p>
 <table>
 <thead>
 <tr>
@@ -503,28 +442,22 @@
 </thead>
 <tbody>
 <tr>
-<td>total</td>
-<td>Number</td>
+<td>timestamp</td>
+<td>Date</td>
 <td>Mandatory</td>
-<td>Total number of results in the database for this query</td>
+<td>Time of the event</td>
 </tr>
 <tr>
-<td>size</td>
-<td>Number</td>
+<td>name</td>
+<td>String</td>
 <td>Mandatory</td>
-<td>Number of results returned in this query</td>
+<td>Name of the event</td>
 </tr>
 <tr>
-<td>offset</td>
-<td>Number</td>
-<td>Mandatory</td>
-<td>First item in the page</td>
-</tr>
-<tr>
-<td>Limit</td>
-<td>Number</td>
-<td>Mandatory</td>
-<td>Limit from the response (or its default value)</td>
+<td>params</td>
+<td>Dictionary</td>
+<td>Optional</td>
+<td>Parameters associated with the even</td>
 </tr>
 </tbody>
 </table></div>
