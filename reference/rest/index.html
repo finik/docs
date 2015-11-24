@@ -129,11 +129,15 @@
     
         <li class="main active"><a href="#rest-api-reference">REST API Reference</a></li>
         
+            <li><a href="#agent-sessions">Agent sessions</a></li>
+        
             <li><a href="#authentication">Authentication</a></li>
+        
+            <li><a href="#applications">Applications</a></li>
         
             <li><a href="#issues">Issues</a></li>
         
-            <li><a href="#sessions">Sessions</a></li>
+            <li><a href="#recordings">Recordings</a></li>
         
             <li><a href="#common">Common</a></li>
         
@@ -143,8 +147,258 @@
             <div class="col-md-9" role="main">
 
 <h1 id="rest-api-reference">REST API Reference</h1>
+<h2 id="agent-sessions">Agent sessions</h2>
+<h3 id="create-session">Create session</h3>
+<p>Creates new or updates an existing agent session. Called upon application start (SDK launch) in mobile applications.</p>
+<pre><code class="http">POST /sessions
+</code></pre>
+
+<p><strong> Request </strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Flags</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_token</td>
+<td>String</td>
+<td>Mandatory</td>
+<td></td>
+</tr>
+<tr>
+<td>access_token</td>
+<td>String</td>
+<td>Optional</td>
+<td>If already exist, must send the existing one</td>
+</tr>
+<tr>
+<td>environment</td>
+<td><a href="#common-environment">ENVIRONMENT</a></td>
+<td>Mandatory</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong> Response </strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Flags</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>access_token</td>
+<td>String</td>
+<td>Mandatory</td>
+<td></td>
+</tr>
+<tr>
+<td>anonymous</td>
+<td>Boolean</td>
+<td>Mandatory</td>
+<td>Is this an anonymous session</td>
+</tr>
+<tr>
+<td>config</td>
+<td><a href="#common-config">CONFIG</a></td>
+<td>Mandatory</td>
+<td>Client agent configuration, may override local settings</td>
+</tr>
+</tbody>
+</table>
 <h2 id="authentication">Authentication</h2>
-<p>TBD</p>
+<p>Login is optional in mobile SDKs, mandatory in browser extensions.</p>
+<h3 id="login">Login</h3>
+<pre><code class="http">POST /login
+</code></pre>
+
+<p><strong> Request </strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Flags</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>access_token</td>
+<td>String</td>
+<td>Optional</td>
+<td>If already exist, must send the existing one</td>
+</tr>
+<tr>
+<td>username</td>
+<td>String</td>
+<td>Mandatory</td>
+<td></td>
+</tr>
+<tr>
+<td>password</td>
+<td>String</td>
+<td>Mandatory</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong> Response </strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Flags</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>access_token</td>
+<td>String</td>
+<td>Mandatory</td>
+<td>Client must store the new token, it may be refreshed</td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Mandatory</td>
+<td>Name of the user for display</td>
+</tr>
+</tbody>
+</table>
+<h3 id="logout">Logout</h3>
+<pre><code class="http">POST /logout
+</code></pre>
+
+<p><strong> Request </strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Flags</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>access_token</td>
+<td>String</td>
+<td>Optional</td>
+<td>If already exist, must send the existing one</td>
+</tr>
+</tbody>
+</table>
+<p><strong> Response </strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Flags</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>access_token</td>
+<td>String</td>
+<td>Mandatory</td>
+<td>Client must store the new token, it may be refreshed</td>
+</tr>
+</tbody>
+</table>
+<h2 id="applications">Applications</h2>
+<h3 id="get-list-of-applications">Get list of applications</h3>
+<pre><code class="http">GET /applications
+</code></pre>
+
+<p><strong> Request </strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Flags</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>access_token</td>
+<td>String</td>
+<td>Mandatory</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong> Response </strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Flags</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>meta</td>
+<td><a href="#PAGINATION">META</a></td>
+<td>Mandatory</td>
+<td></td>
+</tr>
+<tr>
+<td>items</td>
+<td>[<a href="#APPLICATION">APPLICATION</a>]</td>
+<td>Mandatory</td>
+<td>Array of found applications</td>
+</tr>
+</tbody>
+</table>
+<p><strong> APPLICATION </strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Flags</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_token</td>
+<td>String</td>
+<td>Mandatory</td>
+<td>Application token</td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Mandatory</td>
+<td>Application name</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Mandatory</td>
+<td>'ios', 'android', 'web', 'tvos'...</td>
+</tr>
+</tbody>
+</table>
 <h2 id="issues">Issues</h2>
 <h3 id="create-issue">Create issue</h3>
 <pre><code class="http">POST /issues
@@ -172,6 +426,12 @@
 <td>String</td>
 <td>Mandatory</td>
 <td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>Mandatory</td>
+<td>'bug', 'crash', 'assert'</td>
 </tr>
 <tr>
 <td>environment</td>
@@ -326,9 +586,9 @@
 </tr>
 </tbody>
 </table>
-<h2 id="sessions">Sessions</h2>
-<h3 id="create-session">Create session</h3>
-<pre><code class="http">POST /issues/1234/sessions
+<h2 id="recordings">Recordings</h2>
+<h3 id="create-recording">Create recording</h3>
+<pre><code class="http">POST /issues/1234/recordings
 </code></pre>
 
 <p><strong> Request </strong></p>
@@ -380,10 +640,10 @@
 <td>Unique ID of the issue in the system</td>
 </tr>
 <tr>
-<td>session_id</td>
+<td>recording_id</td>
 <td>String</td>
 <td>Mandatory</td>
-<td>Unique ID of the recording session in the system</td>
+<td>Unique ID of the recording in the system</td>
 </tr>
 <tr>
 <td>endpoint</td>
@@ -393,8 +653,8 @@
 </tr>
 </tbody>
 </table>
-<h3 id="update-session">Update session</h3>
-<pre><code class="http">PUT /issues/1234/sessions/4321
+<h3 id="notify-upload-completion">Notify upload completion</h3>
+<pre><code class="http">POST /issues/1234/recordings/4321/status
 </code></pre>
 
 <p><strong> Request </strong></p>
@@ -421,10 +681,10 @@
 <td></td>
 </tr>
 <tr>
-<td>upload_completed</td>
-<td>Boolean</td>
+<td>status</td>
+<td>String</td>
 <td>Mandatory</td>
-<td></td>
+<td>'completed', 'failed', 'aborted'</td>
 </tr>
 </tbody>
 </table>
@@ -491,6 +751,7 @@
 </tr>
 </tbody>
 </table>
+<p><a name="common-meta"></a></p>
 <h3 id="meta">META</h3>
 <table>
 <thead>
@@ -525,6 +786,26 @@
 <td>Number</td>
 <td>Mandatory</td>
 <td>Limit from the response (or its default value)</td>
+</tr>
+</tbody>
+</table>
+<p><a name="common-config"></a></p>
+<h3 id="config">CONFIG</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Flags</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>allow_anonymous</td>
+<td>Bool</td>
+<td>Mandatory</td>
+<td>Will the server accept anonymous reports from this session? This does not apply to 'crash' and 'assert' reporting, these will get accepted regardless.</td>
 </tr>
 </tbody>
 </table></div>
