@@ -179,13 +179,13 @@ been completed.</p>
 
 <h3 id="step-3">Step 3</h3>
 <p>Notify the system the recording session bundle has been uploaded</p>
-<pre><code>PUT https://api.bugsee.com/issues/1234/recordings/4321
+<pre><code>POST https://api.bugsee.com/issues/1234/recordings/4321/status
 </code></pre>
 
 <pre><code class="json">{
     app_token: '1234567',
     access_token: '654321',
-    upload_complete: true
+    status: 'completed'
 }
 </code></pre>
 
@@ -219,13 +219,13 @@ been completed.</p>
 
 <h3 id="step-3_1">Step 3</h3>
 <p>Notify the system the recording session bundle has been uploaded</p>
-<pre><code>PUT https://api.bugsee.com/issues/1234/recordings/4321
+<pre><code>POST https://api.bugsee.com/issues/1234/recordings/4321/status
 </code></pre>
 
 <pre><code class="json">{
     app_token: '1234567',
     access_token: '654321',
-    upload_complete: true
+    status: 'completed'
 }
 </code></pre>
 
