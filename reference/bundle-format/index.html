@@ -206,6 +206,12 @@
 <td>Optional</td>
 <td>If the stream is 'video'</td>
 </tr>
+<tr>
+<td>log_attrs</td>
+<td><a href="#LOG_ATTRS">LOG_ATTRS</a></td>
+<td>Optional</td>
+<td>If the stream is 'log'</td>
+</tr>
 </tbody>
 </table>
 <h3 id="video_attrs">VIDEO_ATTRS</h3>
@@ -242,6 +248,25 @@
 <td>Number</td>
 <td>Mandatory</td>
 <td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="log_attrs">LOG_ATTRS</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Flags</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>format</td>
+<td>String</td>
+<td>Mandatory</td>
+<td>'logcat', 'nslog'</td>
 </tr>
 </tbody>
 </table>

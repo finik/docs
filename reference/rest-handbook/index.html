@@ -164,22 +164,22 @@ been completed.</p>
 }
 </code></pre>
 
-<p>The response in case of success is going to include issue_id, session_id and an endpoint for uploading the bundle.</p>
+<p>The response in case of success is going to include issue_id, recording_id and an endpoint for uploading the bundle.</p>
 <pre><code class="json">{
     issue_id: '1234',
-    session_id: '4321',
+    recording_id: '4321',
     endpoint: 'https://upload-bucket.s3.amazonaws.com/2345678/'
 }
 </code></pre>
 
 <h3 id="step-2">Step 2</h3>
 <p>Upload the bundle to the provided endpoint</p>
-<pre><code>POST https://upload-bucket.s3.amazonaws.com/2345678/
+<pre><code>PUT https://upload-bucket.s3.amazonaws.com/2345678/
 </code></pre>
 
 <h3 id="step-3">Step 3</h3>
 <p>Notify the system the recording session bundle has been uploaded</p>
-<pre><code>PUT https://api.bugsee.com/issues/1234/sessions/4321
+<pre><code>PUT https://api.bugsee.com/issues/1234/recordings/4321
 </code></pre>
 
 <pre><code class="json">{
@@ -192,7 +192,7 @@ been completed.</p>
 <h2 id="adding-recording-to-an-issue">Adding recording to an issue</h2>
 <p>The sequence is similar to creating a new issue with slight variations, but it consists of 3 steps as well</p>
 <h3 id="step-1_1">Step 1</h3>
-<pre><code>POST https://api.bugsee.com/issues/1234/sessions
+<pre><code>POST https://api.bugsee.com/issues/1234/recordings
 </code></pre>
 
 <pre><code class="json">{
@@ -204,7 +204,7 @@ been completed.</p>
 }
 </code></pre>
 
-<p>The response in case of success is going to include issue_id, session_id and an endpoint for uploading the bundle.</p>
+<p>The response in case of success is going to include issue_id, recording_id and an endpoint for uploading the bundle.</p>
 <pre><code class="json">{
     issue_id: '1234',
     session_id: '4321',
@@ -219,7 +219,7 @@ been completed.</p>
 
 <h3 id="step-3_1">Step 3</h3>
 <p>Notify the system the recording session bundle has been uploaded</p>
-<pre><code>PUT https://api.bugsee.com/issues/1234/sessions/4321
+<pre><code>PUT https://api.bugsee.com/issues/1234/recordings/4321
 </code></pre>
 
 <pre><code class="json">{
